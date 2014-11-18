@@ -9,7 +9,7 @@ scratch_rsp:	 main.o network.o
 	gcc $(LDFLAGS) $^ -o $@
 
 main.o:	main.c rsp.h
-	gcc $(CFLAGS) -c $^ -o $@ 
+	gcc $(CFLAGS) -c $< -o $@ 
 	
 network.o: network.c
-	gcc $(CFLAGS) -c $^ -o $@ 
+	gcc $(CFLAGS) -c $< -o $@ 

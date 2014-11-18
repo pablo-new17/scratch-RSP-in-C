@@ -30,8 +30,8 @@ int main(void)
 	unsigned char		string[16];
 #endif	//_DEBUG_
 
-	Client_ConnectTo(PORT_NUMBER, INADDR_ANY, &sock)
-	
+	Client_ConnectTo(PORT_NUMBER, INADDR_ANY, &sock);
+
 	while(1)
 	{
 		FD_ZERO(&readset);
