@@ -1,7 +1,12 @@
-
-
-
-
+#include <stdio.h>		//perror()
+#include <sys/types.h>		//socket(), connect()
+#include <sys/socket.h>		//socket(), connect()
+#include <string.h>		//bzero()
+#include <arpa/inet.h>		//htons()
+#include <sys/socket.h>		//inet_aton()
+#include <netinet/in.h>		//inet_aton()
+#include <arpa/inet.h>		//inet_aton()
+#include <unistd.h>		//close()
 
 bool Client_ConnectTo(unsigned short Port, unsigned int IP, int* Socket)
 {
