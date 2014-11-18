@@ -30,26 +30,10 @@ int main(void)
 	unsigned char		string[16];
 #endif	//_DEBUG_
 
-	if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-	{
-		perror("Client-socket() error");
-		exit(-1);
-	}
-	memset(&scratch_server, 0x00, sizeof(struct sockaddr_in));
-	scratch_server.sin_family = AF_INET;
-	scratch_server.sin_port = htons(PORT_NUMBER);
-	inet_aton("127.0.0.1", &scratch_server.sin_addr);
-
-	if(connect(sock, (struct sockaddr *)&scratch_server, sizeof(scratch_server)) < 0)
-	{
-		perror("Client-connect() error");
-		close(sock);
-		exit(-1);
-	}
-
+	Client_ConnectTo(PORT_NUMBER, INADDR_ANY, &sock)
+	
 	while(1)
 	{
-
 		FD_ZERO(&readset);
 		FD_ZERO(&writeset);
 		maxfd  = sock;
