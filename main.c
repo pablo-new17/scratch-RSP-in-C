@@ -19,7 +19,6 @@
 
 int main(void)
 {
-	struct sockaddr_in	scratch_server;
 	int			sock, maxfd;
 	fd_set			readset, writeset;
 	int			result;
@@ -55,7 +54,7 @@ int main(void)
 #ifdef	_DEBUG_
 			printf("message size = %u\n", msg.Size);
 #endif	//_DEBUG_
-			msg.Message = malloc(msg.Size);
+			msg.Message = calloc(1, msg.Size+1);
 			result = recv(sock, msg.Message, msg.Size, 0);
 
 #ifdef	_DEBUG_
@@ -74,15 +73,42 @@ int main(void)
 			if(strncasecmp(msg.Message, MSG_TYPE_UPDATE, sizeof(MSG_TYPE_UPDATE)-1)==0)
 			{
 				printf("sensor update: %s\n", msg.Message+sizeof(MSG_TYPE_UPDATE)-1);
+
+				free(msg.Message);
+				msg.Message = "sensor-update \"myval\" 12";
+				msg.Size = strlen(msg.Message);
+//#ifdef        _DEBUG_
+				printf("write size = %d, Data size=%d\n", sizeof(msg.Size), msg.Size);
+				printf("write size = %d, Data=%s\n", strlen(msg.Message), msg.Message);
+//#endif        //_DEBUG_
+				msg.Size = htonl(msg.Size);
+				write(sock, &msg.Size, sizeof(msg.Size));
+				write(sock, msg.Message, strlen(msg.Message));
+
 			}
 			else if(strncasecmp(msg.Message, MSG_TYPE_BROADCAST, sizeof(MSG_TYPE_BROADCAST)-1)==0)
 			{
 				printf("broadcast: %s\n",  msg.Message+sizeof(MSG_TYPE_BROADCAST)-1);
+
+				free(msg.Message);
+				msg.Message = "broadcast pablo";
+				msg.Size = strlen(msg.Message);
+//#ifdef	_DEBUG_
+				printf("write size = %d, Data size=%d\n", sizeof(msg.Size), msg.Size);
+				printf("write size = %d, Data=%s\n", strlen(msg.Message), msg.Message);
+//#endif	//_DEBUG_ 
+				msg.Size = htonl(msg.Size);
+				write(sock, &msg.Size, sizeof(msg.Size));
+				write(sock, msg.Message, strlen(msg.Message));
 			}
 			else
 			{
 				printf("unknow message type\n");
 			}
+
+
+
+
 		}
 
 	}

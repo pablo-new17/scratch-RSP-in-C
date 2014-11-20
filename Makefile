@@ -13,3 +13,6 @@ main.o:	main.c rsp.h
 	
 network.o: network.c
 	gcc $(CFLAGS) -c $< -o $@ 
+
+clean:
+	rm *.o
